@@ -1,7 +1,7 @@
 ﻿
 namespace SteamMaster
 {
-    partial class Form1
+    partial class SMmain
     {
         /// <summary>
         /// Required designer variable.

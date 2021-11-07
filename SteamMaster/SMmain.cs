@@ -5,14 +5,15 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using Steamworks;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SteamMaster
 {
-    public partial class Form1 : Form
+    public partial class SMmain : Form
     {
-        public Form1()
+        public SMmain()
         {
             InitializeComponent();
         }
