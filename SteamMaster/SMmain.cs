@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Threading;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace SteamMaster
 {
@@ -34,7 +35,7 @@ namespace SteamMaster
     {
         Dictionary<int, string> games = new Dictionary<int, string>();
         List<Thread> threads = new List<Thread>();
-        JToken token;
+        JToken token, tokenB;
 
         object safe = new object();
 
@@ -45,7 +46,7 @@ namespace SteamMaster
             //lblOutput.Text = SteamUserStats.GetAchievementDisplayAttribute(SteamUserStats.GetAchievementName(1), "name");
             //lblOutput.Text += " "  + SteamUserStats.GetAchievementDisplayAttribute(SteamUserStats.GetAchievementName(1), "desc");
 
-            lblTests.Text = "";
+            lblTests.Text = "0";
 
             _LoadGames.RunWorkerAsync();
         }
@@ -54,22 +55,29 @@ namespace SteamMaster
         {
             using (WebClient client = new WebClient())
             {
-                 try
-                 {
-                    if (client.DownloadString($"https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?gameid={((stats)values).id}") != "")
-                    {
-                        games.Add(((stats)values).id, (string)token[((stats)values).i].SelectToken("name"));
-                        lock(safe)
-                        {
-                            _LoadGames.ReportProgress(((stats)values).id);
-                        }
+                string json = client.DownloadString($"https://steamspy.com/api.php?request=appdetails&appid={((stats)values).id}"); // THIS IS ALLOT FASTER!!!
+                if (JObject.Parse(json).SelectToken("developer").ToString().Length != 0 &&
+                    JObject.Parse(json).SelectToken("publisher").ToString().Length != 0)
+                {
+                    games.Add(((stats)values).id, (string)token[((stats)values).i].SelectToken("name"));
+                    _LoadGames.ReportProgress(((stats)values).id);
+                }
+                //try
+                // {
+                //    if (client.DownloadString($"https://api.steampowered.com/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?gameid={((stats)values).id}") != "")
+                //    {
+                //        games.Add(((stats)values).id, (string)token[((stats)values).i].SelectToken("name"));
+                //        lock(safe)
+                //        {
+                //            _LoadGames.ReportProgress(((stats)values).id);
+                //        }
                         
-                        ((stats)values).thread.Join();
-                    }
-                 }
-                 catch {
-                    ((stats)values).thread.Join();
-                 }
+                //        ((stats)values).thread.Join();
+                //    }
+                // }
+                // catch {
+                //    ((stats)values).thread.Join();
+                // }
                 ((stats)values).thread.Join();
             }
             ((stats)values).thread.Join();
@@ -95,6 +103,13 @@ namespace SteamMaster
                     if (!games.ContainsKey(currentID) &&
                         SteamApps.BIsSubscribedApp(new AppId_t((uint)currentID)))
                     {
+                        //json = webClient.DownloadString($"https://steamspy.com/api.php?request=appdetails&appid={currentID}"); // THIS IS ALLOT FASTER!!!
+                        //if (JObject.Parse(json).SelectToken("developer").ToString().Length != 0 &&
+                        //    JObject.Parse(json).SelectToken("publisher").ToString().Length != 0)
+                        //{
+                        //    games.Add(currentID, (string)token[i].SelectToken("name"));
+                        //    _LoadGames.ReportProgress(currentID);
+                        //}
                         threads.Add(new Thread(new ParameterizedThreadStart(AddToDictionary)));
                         threads[threads.Count - 1].Start(new stats(i, currentID, threads[threads.Count - 1]));
                     }
@@ -107,7 +122,7 @@ namespace SteamMaster
             {
                 for (int i = 0; i < threads.Count - 1; i++)
                 {
-                    if (threads[i].ThreadState != ThreadState.WaitSleepJoin)
+                    if (threads[i].ThreadState != System.Threading.ThreadState.WaitSleepJoin)
                     {
                         joined = false;
                         break;
@@ -122,12 +137,13 @@ namespace SteamMaster
 
         private void _LoadGames_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            lblTests.Text += games[e.ProgressPercentage] + ":" + e.ProgressPercentage + ", ";
+            lblTests.Text = games[e.ProgressPercentage] + ":" + e.ProgressPercentage + ", ";
+            //$"{Convert.ToInt32(lblTests.Text) + 1}";
         }
 
         private void _LoadGames_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
+            _TotalTime.Text = $"{DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()} Finished! Total of {games.Count} Games";
         }
     }
 }

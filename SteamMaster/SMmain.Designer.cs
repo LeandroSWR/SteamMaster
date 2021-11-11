@@ -46,6 +46,7 @@ namespace SteamMaster
             this.lblTests = new System.Windows.Forms.Label();
             this._GamesListView = new System.Windows.Forms.ListView();
             this._LoadGames = new System.ComponentModel.BackgroundWorker();
+            this._TotalTime = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -155,13 +156,15 @@ namespace SteamMaster
             // 
             // lblTests
             // 
+            this.lblTests.AllowDrop = true;
             this.lblTests.AutoSize = true;
             this.lblTests.BackColor = System.Drawing.Color.Black;
+            this.lblTests.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblTests.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTests.ForeColor = System.Drawing.Color.White;
             this.lblTests.Location = new System.Drawing.Point(0, 25);
             this.lblTests.Name = "lblTests";
-            this.lblTests.Size = new System.Drawing.Size(35, 13);
+            this.lblTests.Size = new System.Drawing.Size(37, 15);
             this.lblTests.TabIndex = 1;
             this.lblTests.Text = "label1";
             // 
@@ -190,11 +193,21 @@ namespace SteamMaster
             this._LoadGames.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this._LoadGames_ProgressChanged);
             this._LoadGames.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this._LoadGames_RunWorkerCompleted);
             // 
+            // _TotalTime
+            // 
+            this._TotalTime.AutoSize = true;
+            this._TotalTime.Location = new System.Drawing.Point(2, 115);
+            this._TotalTime.Name = "_TotalTime";
+            this._TotalTime.Size = new System.Drawing.Size(35, 13);
+            this._TotalTime.TabIndex = 3;
+            this._TotalTime.Text = "label2";
+            // 
             // SMmain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(742, 292);
+            this.Controls.Add(this._TotalTime);
             this.Controls.Add(this.lblTests);
             this.Controls.Add(this._GamesListView);
             this.Controls.Add(this.toolStrip1);
@@ -225,6 +238,7 @@ namespace SteamMaster
         private System.Windows.Forms.ListView _GamesListView;
         private System.ComponentModel.BackgroundWorker _LoadGames;
         internal System.Windows.Forms.Label lblTests;
+        private System.Windows.Forms.Label _TotalTime;
     }
 }
 
