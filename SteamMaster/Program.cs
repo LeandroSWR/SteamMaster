@@ -5,6 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Steamworks;
+using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SteamMaster
 {
@@ -35,9 +39,27 @@ namespace SteamMaster
 
             if (Steamworks.SteamAPI.IsSteamRunning())
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new SMmain());
+                //List<string> achievements = new List<string>();
+                //for (uint i = 0; i < SteamUserStats.GetNumAchievements(); i++)
+                //{
+                //    achievements.Add(SteamUserStats.GetAchievementName(i));
+                //    SteamUserStats.ClearAchievement(achievements[(int)i]);
+                //}
+
+
+                //SteamUserStats.SetAchievement(SteamUserStats.GetAchievementName(1));
+                //Steamworks.SteamUserStats.ClearAchievement("ACH_WIN_ONE_GAME");
+                //Steamworks.SteamUserStats.StoreStats();
+
+                AppId_t appId_T = new AppId_t(480);
+
+                if (SteamApps.BIsSubscribedApp(appId_T))
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new SMmain());
+                }
+
             }
             else
             {
