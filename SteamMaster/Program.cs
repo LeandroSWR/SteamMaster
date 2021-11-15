@@ -11,7 +11,9 @@ namespace SteamMaster
 {
     static class Program
     {
-        static readonly long Steam64IDIdentifier = 0x0110000100000000;
+        // Do not edit! This is a constant value of the Steam64ID Identifier
+        // Provided by valve on https://developer.valvesoftware.com/wiki/SteamID
+        const long Steam64IDIdentifier = 0x0110000100000000;
 
         /// <summary>
         /// The main entry point for the application.
@@ -20,6 +22,8 @@ namespace SteamMaster
         static void Main()
         {
             long steamID64 = 0;
+            
+            // Checks if the app is being launched from within the steam path
             bool ranFromSteamPath = Application.StartupPath.Contains(
                 (string)Registry.GetValue(
                     @"HKEY_LOCAL_MACHINE\Software\Valve\Steam", 
@@ -35,6 +39,7 @@ namespace SteamMaster
                     MessageBoxIcon.Error);
             }
 
+            // Try to convert the SteamID3 to SteamID64
             try
             {
                 long steamID3 = Convert.ToInt64(
@@ -42,11 +47,12 @@ namespace SteamMaster
                         @"HKEY_CURRENT_USER\Software\Valve\Steam\ActiveProcess", 
                         "ActiveUser", 
                         0));
-
+                // To convert we just need to add the Identifier to the existing SteamID3
                 steamID64 = steamID3 + Steam64IDIdentifier;
             }
             catch
             {
+                // If we failed to get the SteamID3 it means Steam is not installed on this machine
                 MessageBox.Show(
                     "Steam is not installed. Make you have steam installed and it's running before opening this tool.",
                     "Error",
@@ -54,6 +60,7 @@ namespace SteamMaster
                     MessageBoxIcon.Error);
             }
 
+            // Check if the SteamID3 we got wasn't 0
             if (steamID64 != Steam64IDIdentifier)
             {
                 Application.EnableVisualStyles();
@@ -62,32 +69,14 @@ namespace SteamMaster
             }
             else
             {
+                // It was 0 if Steam was not running
+                // We can use this to make sure steam is running when starting the tool
                 MessageBox.Show(
                     "Steam is not running. Make sure steam is running before opening this tool.",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
-            
-
-            //Environment.SetEnvironmentVariable("SteamAppID", "480");
-            //Steamworks.SteamAPI.Init();
-
-
-            //List<string> achievements = new List<string>();
-            //for (uint i = 0; i < SteamUserStats.GetNumAchievements(); i++)
-            //{
-            //    achievements.Add(SteamUserStats.GetAchievementName(i));
-            //    SteamUserStats.SetAchievement(SteamUserStats.GetAchievementName(i));
-            //    //SteamUserStats.ClearAchievement(achievements[(int)i]);
-            //}
-            //Steamworks.SteamUserStats.StoreStats();
-
-            //SteamUserStats.SetAchievement(SteamUserStats.GetAchievementName(1));
-            //Steamworks.SteamUserStats.ClearAchievement("ACH_WIN_ONE_GAME");
-            //Steamworks.SteamUserStats.StoreStats();
-
-
         }
     }
 }

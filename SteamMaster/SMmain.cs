@@ -229,15 +229,8 @@ namespace SteamMaster
             var text = e.Text;
             int startIndex = e.StartIndex;
 
-            Predicate<GameInfo> predicate;
-            /*if (e.IsPrefixSearch == true)*/
-            {
-                predicate = gi => gi.Name != null && gi.Name.StartsWith(text, StringComparison.CurrentCultureIgnoreCase);
-            }
-            /*else
-            {
-                predicate = gi => gi.Name != null && string.Compare(gi.Name, text, StringComparison.CurrentCultureIgnoreCase) == 0;
-            }*/
+            Predicate<GameInfo> predicate = gi => 
+                gi.Name != null && gi.Name.StartsWith(text, StringComparison.CurrentCultureIgnoreCase);
 
             int index;
             if (e.StartIndex >= count)
