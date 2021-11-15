@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace SteamMaster
 {
-    struct GameInfo
+    class GameInfo
     {
+        public string Name { get; }
+        public int ID { get; }
+        public int ImageIndex { get; set; }
 
+        public GameInfo(int id, string name)
+        {
+            ID = id;
+            Name = name;
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace SteamMaster
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this._ToolStrip = new System.Windows.Forms.ToolStrip();
             this._RefreshGamesButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
@@ -43,29 +43,29 @@ namespace SteamMaster
             this._FilterJunkMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._GameLogoList = new System.Windows.Forms.ImageList(this.components);
             this._LogoWorker = new System.ComponentModel.BackgroundWorker();
-            this.lblTests = new System.Windows.Forms.Label();
-            this._GamesListView = new System.Windows.Forms.ListView();
             this._LoadGames = new System.ComponentModel.BackgroundWorker();
             this._TotalTime = new System.Windows.Forms.Label();
-            this.toolStrip1.SuspendLayout();
+            this._GamesListView = new SteamMaster.DoubleBufferedListView();
+            this._ToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // toolStrip1
+            // _ToolStrip
             // 
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._ToolStrip.CanOverflow = false;
+            this._ToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this._ToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._RefreshGamesButton,
             this.toolStripSeparator1,
             this.toolStripTextBox1,
             this._AddGameButton,
             this.toolStripSeparator2,
             this.toolStripDropDownButton1});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip1.Size = new System.Drawing.Size(742, 25);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
+            this._ToolStrip.Location = new System.Drawing.Point(0, 0);
+            this._ToolStrip.Name = "_ToolStrip";
+            this._ToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this._ToolStrip.Size = new System.Drawing.Size(742, 25);
+            this._ToolStrip.TabIndex = 1;
+            this._ToolStrip.Text = "toolStrip1";
             // 
             // _RefreshGamesButton
             // 
@@ -153,54 +153,43 @@ namespace SteamMaster
             // _LogoWorker
             // 
             this._LogoWorker.WorkerSupportsCancellation = true;
+            this._LogoWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.DownloadLogo);
+            this._LogoWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.OnLogoDownloaded);
             // 
-            // lblTests
+            // _LoadGames
             // 
-            this.lblTests.AllowDrop = true;
-            this.lblTests.AutoSize = true;
-            this.lblTests.BackColor = System.Drawing.Color.Black;
-            this.lblTests.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTests.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTests.ForeColor = System.Drawing.Color.White;
-            this.lblTests.Location = new System.Drawing.Point(0, 25);
-            this.lblTests.Name = "lblTests";
-            this.lblTests.Size = new System.Drawing.Size(37, 15);
-            this.lblTests.TabIndex = 1;
-            this.lblTests.Text = "label1";
+            this._LoadGames.WorkerSupportsCancellation = true;
+            this._LoadGames.DoWork += new System.ComponentModel.DoWorkEventHandler(this.DownloadGamesList);
+            this._LoadGames.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.OnGamesDownloadFinished);
+            // 
+            // _TotalTime
+            // 
+            this._TotalTime.AutoSize = true;
+            this._TotalTime.Location = new System.Drawing.Point(-3, 279);
+            this._TotalTime.Name = "_TotalTime";
+            this._TotalTime.Size = new System.Drawing.Size(35, 13);
+            this._TotalTime.TabIndex = 3;
+            this._TotalTime.Text = "label2";
             // 
             // _GamesListView
             // 
             this._GamesListView.BackColor = System.Drawing.Color.Black;
             this._GamesListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._GamesListView.ForeColor = System.Drawing.Color.White;
             this._GamesListView.HideSelection = false;
             this._GamesListView.LargeImageList = this._GameLogoList;
-            this._GamesListView.Location = new System.Drawing.Point(0, 25);
+            this._GamesListView.Location = new System.Drawing.Point(0, 0);
             this._GamesListView.MultiSelect = false;
             this._GamesListView.Name = "_GamesListView";
-            this._GamesListView.Size = new System.Drawing.Size(742, 267);
+            this._GamesListView.Size = new System.Drawing.Size(742, 292);
             this._GamesListView.SmallImageList = this._GameLogoList;
             this._GamesListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this._GamesListView.TabIndex = 0;
             this._GamesListView.TileSize = new System.Drawing.Size(184, 69);
             this._GamesListView.UseCompatibleStateImageBehavior = false;
             this._GamesListView.VirtualMode = true;
-            // 
-            // _LoadGames
-            // 
-            this._LoadGames.WorkerReportsProgress = true;
-            this._LoadGames.WorkerSupportsCancellation = true;
-            this._LoadGames.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this._LoadGames.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this._LoadGames_ProgressChanged);
-            this._LoadGames.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this._LoadGames_RunWorkerCompleted);
-            // 
-            // _TotalTime
-            // 
-            this._TotalTime.AutoSize = true;
-            this._TotalTime.Location = new System.Drawing.Point(2, 115);
-            this._TotalTime.Name = "_TotalTime";
-            this._TotalTime.Size = new System.Drawing.Size(35, 13);
-            this._TotalTime.TabIndex = 3;
-            this._TotalTime.Text = "label2";
+            this._GamesListView.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this._GamesListView_RetrieveVirtualItem);
+            this._GamesListView.SearchForVirtualItem += new System.Windows.Forms.SearchForVirtualItemEventHandler(this._GamesListView_SearchForVirtualItem);
             // 
             // SMmain
             // 
@@ -208,13 +197,12 @@ namespace SteamMaster
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(742, 292);
             this.Controls.Add(this._TotalTime);
-            this.Controls.Add(this.lblTests);
+            this.Controls.Add(this._ToolStrip);
             this.Controls.Add(this._GamesListView);
-            this.Controls.Add(this.toolStrip1);
             this.Name = "SMmain";
             this.Text = "Steam Master";
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this._ToolStrip.ResumeLayout(false);
+            this._ToolStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -222,7 +210,7 @@ namespace SteamMaster
 
         #endregion
 
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip _ToolStrip;
         private System.Windows.Forms.ToolStripButton _RefreshGamesButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
@@ -235,10 +223,9 @@ namespace SteamMaster
         private System.Windows.Forms.ToolStripMenuItem _FilterJunkMenuItem;
         private System.Windows.Forms.ImageList _GameLogoList;
         private System.ComponentModel.BackgroundWorker _LogoWorker;
-        private System.Windows.Forms.ListView _GamesListView;
         private System.ComponentModel.BackgroundWorker _LoadGames;
-        internal System.Windows.Forms.Label lblTests;
         private System.Windows.Forms.Label _TotalTime;
+        private DoubleBufferedListView _GamesListView;
     }
 }
 
