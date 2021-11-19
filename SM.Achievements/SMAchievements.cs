@@ -11,29 +11,36 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace SM.Achievements
 {
     public partial class SMAchievements : Form
     {
+        private Dictionary<string, AchievementInfo> achievements;
+
         public SMAchievements()
         {
+            achievements = new Dictionary<string, AchievementInfo>();
+
             InitializeComponent();
         }
 
         private void SMAchievements_Load(object sender, EventArgs e)
         {
-            populateItems();
+            PopulateItems();
         }
 
-        private void populateItems()
+        private void PopulateItems()
         {
             ListItem[] listItems = new ListItem[SteamUserStats.GetNumAchievements()];
 
+            achievements.Clear();
             flowLayoutPanel1.Controls.Clear();
 
             string aName;
             int aImageIndex;
+            bool aUnlocked;
 
             for (int i = 0; i < listItems.Length; i++)
             {
@@ -41,9 +48,15 @@ namespace SM.Achievements
                 aImageIndex = SteamUserStats.GetAchievementIcon(aName);
 
                 listItems[i] = new ListItem();
+                SteamUserStats.GetAchievement(aName, out aUnlocked);
+                listItems[i].AchievementUnlocked = aUnlocked;
                 listItems[i].AchievementName = SteamUserStats.GetAchievementDisplayAttribute(aName, "name");
                 listItems[i].AchievementDesc = SteamUserStats.GetAchievementDisplayAttribute(aName, "desc");
                 listItems[i].AchievementImg = GetAchievementImage(aImageIndex);
+
+                achievements.Add(listItems[i].AchievementName, new AchievementInfo(aName, aUnlocked));
+
+                listItems[i].Achievements = achievements;
 
                 flowLayoutPanel1.Controls.Add(listItems[i]);
             }
@@ -77,6 +90,31 @@ namespace SM.Achievements
             }
 
             return ret;
+        }
+
+        private void OnSaveValues(object sender, EventArgs e)
+        {
+            foreach(AchievementInfo aInfo in achievements.Values)
+            {
+                if (aInfo.CurrentUnlockState != aInfo.UnlockState)
+                {
+                    if (aInfo.UnlockState)
+                    {
+                        SteamUserStats.SetAchievement(aInfo.ID);
+                    }
+                    else
+                    {
+                        SteamUserStats.ClearAchievement(aInfo.ID);
+                    }
+
+                    SteamUserStats.StoreStats();
+
+                    // Magic number so all achievements pop up on the side
+                    Thread.Sleep(250);
+                }
+            }
+
+            PopulateItems();
         }
     }
 }

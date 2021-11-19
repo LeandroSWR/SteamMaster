@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -6,7 +7,8 @@ namespace SM.Achievements
 {
     public partial class ListItem : UserControl
     {
-        private bool achievementUnlocked;
+        public Dictionary<string, AchievementInfo> Achievements { get; set; }
+
         private string achievementName;
         private string achievementDesc;
         private Image achievementImg;
@@ -15,10 +17,9 @@ namespace SM.Achievements
         [Category("Custom Props")]
         public bool AchievementUnlocked
         {
-            get => achievementUnlocked;
+            get => _AchievementUnlocked.Checked;
             set
             {
-                achievementUnlocked = value;
                 _AchievementUnlocked.Checked = value;
             }
         }
@@ -70,7 +71,10 @@ namespace SM.Achievements
 
         private void OnClick(object sender, System.EventArgs e)
         {
-
+            if (Achievements != null)
+            {
+                Achievements[achievementName].UnlockState = _AchievementUnlocked.Checked;
+            }
         }
     }
 }
