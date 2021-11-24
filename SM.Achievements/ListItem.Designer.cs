@@ -47,6 +47,7 @@ namespace SM.Achievements
             // _AchievementDesc
             // 
             this._AchievementDesc.AutoEllipsis = true;
+            this._AchievementDesc.BackColor = System.Drawing.Color.Transparent;
             this._AchievementDesc.Location = new System.Drawing.Point(106, 35);
             this._AchievementDesc.Name = "_AchievementDesc";
             this._AchievementDesc.Size = new System.Drawing.Size(436, 39);
@@ -56,7 +57,9 @@ namespace SM.Achievements
             // _AchievementName
             // 
             this._AchievementName.AutoEllipsis = true;
+            this._AchievementName.BackColor = System.Drawing.Color.Transparent;
             this._AchievementName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._AchievementName.ForeColor = System.Drawing.Color.Black;
             this._AchievementName.Location = new System.Drawing.Point(105, 10);
             this._AchievementName.Name = "_AchievementName";
             this._AchievementName.Size = new System.Drawing.Size(437, 23);
@@ -78,12 +81,13 @@ namespace SM.Achievements
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::SM.Achievements.Properties.Resources.achievement_bg;
             this.Controls.Add(this._AchievementUnlocked);
             this.Controls.Add(this._AchievementDesc);
             this.Controls.Add(this._AchievementName);
             this.Controls.Add(this._AchievementImg);
             this.Name = "ListItem";
-            this.Size = new System.Drawing.Size(560, 84);
+            this.Size = new System.Drawing.Size(469, 84);
             ((System.ComponentModel.ISupportInitialize)(this._AchievementImg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -63,6 +63,16 @@ namespace SM.Achievements.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap achievement_bg {
+            get {
+                object obj = ResourceManager.GetObject("achievement-bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap transmitter {
             get {
                 object obj = ResourceManager.GetObject("transmitter", resourceCulture);

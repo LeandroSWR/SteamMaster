@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Steamworks;
 using System.Windows.Forms;
-using System.IO;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -33,6 +27,9 @@ namespace SM.Achievements
 
         private void PopulateItems()
         {
+            // We can't continue while the user stats are not up to date
+            while (!SteamUserStats.RequestCurrentStats()) { }
+
             ListItem[] listItems = new ListItem[SteamUserStats.GetNumAchievements()];
 
             achievements.Clear();
@@ -53,6 +50,7 @@ namespace SM.Achievements
                 listItems[i].AchievementName = SteamUserStats.GetAchievementDisplayAttribute(aName, "name");
                 listItems[i].AchievementDesc = SteamUserStats.GetAchievementDisplayAttribute(aName, "desc");
                 listItems[i].AchievementImg = GetAchievementImage(aImageIndex);
+                listItems[i].BackColor = Color.Black;
 
                 achievements.Add(listItems[i].AchievementName, new AchievementInfo(aName, aUnlocked));
 
@@ -115,6 +113,24 @@ namespace SM.Achievements
             }
 
             PopulateItems();
+        }
+
+        private void UnlockAll(object sender, EventArgs e)
+        {
+            foreach(AchievementInfo aInfo in achievements.Values)
+            {
+                SteamUserStats.SetAchievement(aInfo.ID);
+                SteamUserStats.StoreStats();
+            }
+        }
+
+        private void LockAll(object sender, EventArgs e)
+        {
+            foreach (AchievementInfo aInfo in achievements.Values)
+            {
+                SteamUserStats.ClearAchievement(aInfo.ID);
+            }
+            SteamUserStats.StoreStats();
         }
     }
 }

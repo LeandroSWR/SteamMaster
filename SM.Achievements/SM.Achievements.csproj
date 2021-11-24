@@ -96,5 +96,8 @@
   <ItemGroup>
     <None Include="Resources\transmitter.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\achievement-bg.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
