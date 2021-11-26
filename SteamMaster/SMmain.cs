@@ -4,12 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.Xml.XPath;
-using System.Threading;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
@@ -23,6 +20,7 @@ namespace SteamMaster
         List<GameInfo> filteredGames;
         ConcurrentQueue<GameInfo> logoQueue;
         private readonly List<string> _LogosAttempted;
+        private int _SelectedIndex;
 
         private long userID;
 
@@ -241,14 +239,37 @@ namespace SteamMaster
             e.Index = index < 0 ? -1 : index;
         }
 
-        private void OnGameSelected(object sender, MouseEventArgs e)
-        {
-            
-        }
-
         private void OnSelectChange(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            
+            _SelectedIndex = e.ItemIndex;
+        }
+
+        private void OnGameChosen(object sender, EventArgs e)
+        {
+            if (_SelectedIndex < 0 || _SelectedIndex >= this.filteredGames.Count)
+            {
+                return;
+            }
+
+            var info = filteredGames[_SelectedIndex];
+            if (info == null)
+            {
+                return;
+            }
+
+            try
+            {
+                Process.Start("SM.Achievements.exe", info.ID.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (Win32Exception)
+            {
+                MessageBox.Show(
+                    this,
+                    "Failed to start SM.Achievements.exe.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }

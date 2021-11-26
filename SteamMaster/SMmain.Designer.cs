@@ -188,10 +188,10 @@ namespace SteamMaster
             this._GamesListView.TileSize = new System.Drawing.Size(184, 69);
             this._GamesListView.UseCompatibleStateImageBehavior = false;
             this._GamesListView.VirtualMode = true;
+            this._GamesListView.ItemActivate += new System.EventHandler(this.OnGameChosen);
             this._GamesListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.OnSelectChange);
             this._GamesListView.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this._GamesListView_RetrieveVirtualItem);
             this._GamesListView.SearchForVirtualItem += new System.Windows.Forms.SearchForVirtualItemEventHandler(this._GamesListView_SearchForVirtualItem);
-            this._GamesListView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.OnGameSelected);
             // 
             // SMmain
             // 
