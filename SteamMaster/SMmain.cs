@@ -17,20 +17,6 @@ using System.Globalization;
 
 namespace SteamMaster
 {
-    public struct stats
-    {
-        public int i;
-        public int id;
-        public Thread thread;
-
-        public stats(int i, int id, Thread thread)
-        {
-            this.i = i;
-            this.id = id;
-            this.thread = thread;
-        }
-    }
-
     public partial class SMmain : Form
     {
         Dictionary<int, GameInfo> games;
@@ -253,6 +239,16 @@ namespace SteamMaster
             }
 
             e.Index = index < 0 ? -1 : index;
+        }
+
+        private void OnGameSelected(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void OnSelectChange(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            
         }
     }
 }
