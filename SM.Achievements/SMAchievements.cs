@@ -22,13 +22,26 @@ namespace SM.Achievements
 
         private void SMAchievements_Load(object sender, EventArgs e)
         {
-            PopulateItems();
+            RequestIconInfo();
+            RefreshAchievements();
         }
 
-        private void PopulateItems()
+        private void RequestIconInfo()
+        {
+            // Request logo icons (For some reason the Steam API doesn't return the correct id for the icon on the first request)
+            for (int i = 0; i < SteamUserStats.GetNumAchievements(); i++)
+            {
+                // So i do a request but i don't save any info i know wont be correct
+                SteamUserStats.GetAchievementIcon(SteamUserStats.GetAchievementName((uint)i));
+            }
+        }
+
+        private void RefreshAchievements()
         {
             // We can't continue while the user stats are not up to date
-            while (!SteamUserStats.RequestCurrentStats()) { }
+            SteamUserStats.RequestCurrentStats();
+            // Wait's 250ms to make sure we're able to retrieve the stats
+            Thread.Sleep(250);
 
             ListItem[] listItems = new ListItem[SteamUserStats.GetNumAchievements()];
 
@@ -39,16 +52,25 @@ namespace SM.Achievements
             int aImageIndex;
             bool aUnlocked;
 
+            // Request logo icons (For some reason the Steam API doesn't return the correct id for the icon on the first request)
             for (int i = 0; i < listItems.Length; i++)
             {
                 aName = SteamUserStats.GetAchievementName((uint)i);
-                aImageIndex = SteamUserStats.GetAchievementIcon(aName);
+                // So i do a request but i don't save any info i know wont be correct
+                SteamUserStats.GetAchievementIcon(aName);
+            }
+            Thread.Sleep(100);
+
+            for (int i = 0; i < listItems.Length; i++)
+            {
+                aName = SteamUserStats.GetAchievementName((uint)i);
+                SteamUserStats.GetAchievement(aName, out aUnlocked);
 
                 listItems[i] = new ListItem();
-                SteamUserStats.GetAchievement(aName, out aUnlocked);
                 listItems[i].AchievementUnlocked = aUnlocked;
                 listItems[i].AchievementName = SteamUserStats.GetAchievementDisplayAttribute(aName, "name");
                 listItems[i].AchievementDesc = SteamUserStats.GetAchievementDisplayAttribute(aName, "desc");
+                aImageIndex = SteamUserStats.GetAchievementIcon(aName);
                 listItems[i].AchievementImg = GetAchievementImage(aImageIndex);
                 listItems[i].BackColor = Color.Black;
 
@@ -58,6 +80,7 @@ namespace SM.Achievements
 
                 flowLayoutPanel1.Controls.Add(listItems[i]);
             }
+
         }
 
         public Image GetAchievementImage(int aImageIndex)
@@ -107,12 +130,12 @@ namespace SM.Achievements
 
                     SteamUserStats.StoreStats();
 
-                    // Magic number so all achievements pop up on the side
+                    // Magic number so all achievements pop up on the side with no bugs
                     Thread.Sleep(250);
                 }
             }
 
-            PopulateItems();
+            RefreshAchievements();
         }
 
         private void UnlockAll(object sender, EventArgs e)
