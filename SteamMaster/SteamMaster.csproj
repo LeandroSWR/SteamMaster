@@ -33,11 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FontAwesome.Sharp, Version=5.15.4.0, Culture=neutral, PublicKeyToken=d16d1e4e568ec10f, processorArchitecture=MSIL">
+      <HintPath>..\packages\FontAwesome.Sharp.5.15.4\lib\net472\FontAwesome.Sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="Steamworks.NET">
       <HintPath>Resources\Steamworks.NET.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,21 +53,37 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoubleBufferedListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="GameInfo.cs" />
-    <Compile Include="LogoInfo.cs" />
-    <Compile Include="SMmain.cs">
+    <Compile Include="SMMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SMmain.Designer.cs">
-      <DependentUpon>SMmain.cs</DependentUpon>
+    <Compile Include="SMMain.Designer.cs">
+      <DependentUpon>SMMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SMGameSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SMGameSelector.Designer.cs">
+      <DependentUpon>SMGameSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GameInfo.cs" />
+    <Compile Include="LogoInfo.cs" />
+    <Compile Include="SMBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SMBase.Designer.cs">
+      <DependentUpon>SMBase.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="SMGameSelector.resx">
+      <DependentUpon>SMGameSelector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -72,8 +94,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SMmain.resx">
-      <DependentUpon>SMmain.cs</DependentUpon>
+    <EmbeddedResource Include="SMBase.resx">
+      <DependentUpon>SMBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMMain.resx">
+      <DependentUpon>SMMain.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -100,6 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\television-test.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SM_IconText.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\achievement-bg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

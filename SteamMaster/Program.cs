@@ -60,7 +60,7 @@ namespace SteamMaster
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new SMmain(steamID64));
+                Application.Run(new SMBase(steamID64));
             }
             else
             {

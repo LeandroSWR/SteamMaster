@@ -63,6 +63,16 @@ namespace SteamMaster.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap achievement_bg {
+            get {
+                object obj = ResourceManager.GetObject("achievement_bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap arrow_circle_double {
             get {
                 object obj = ResourceManager.GetObject("arrow-circle-double", resourceCulture);
@@ -86,6 +96,16 @@ namespace SteamMaster.Properties {
         internal static System.Drawing.Bitmap magnifier {
             get {
                 object obj = ResourceManager.GetObject("magnifier", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SM_IconText {
+            get {
+                object obj = ResourceManager.GetObject("SM_IconText", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
