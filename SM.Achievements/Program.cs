@@ -14,6 +14,7 @@ namespace SM.Achievements
         static void Main(string[] args)
         {
             long appID;
+            string appName;
 
             if (args.Length == 0)
             {
@@ -31,6 +32,8 @@ namespace SM.Achievements
                 return;
             }
 
+            appName = String.Join(" ", args);
+
             Environment.SetEnvironmentVariable("SteamAppID", $"{appID}");
             SteamAPI.Init();
 
@@ -38,7 +41,7 @@ namespace SM.Achievements
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new SMAchievements());
+                Application.Run(new SMAchievements(appName));
             }
             else
             {

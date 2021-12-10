@@ -51,7 +51,7 @@ namespace SM.Achievements
             this._SaveButton.Name = "_SaveButton";
             this._SaveButton.Size = new System.Drawing.Size(145, 134);
             this._SaveButton.TabIndex = 1;
-            this._SaveButton.Text = "Save Values";
+            this._SaveButton.Text = "Save Achievements";
             this._SaveButton.UseVisualStyleBackColor = true;
             this._SaveButton.Click += new System.EventHandler(this.OnSaveValues);
             // 

@@ -13,11 +13,12 @@ namespace SM.Achievements
     {
         private Dictionary<string, AchievementInfo> achievements;
 
-        public SMAchievements()
+        public SMAchievements(string appName)
         {
             achievements = new Dictionary<string, AchievementInfo>();
 
             InitializeComponent();
+            this.Text = appName;
         }
 
         private void SMAchievements_Load(object sender, EventArgs e)

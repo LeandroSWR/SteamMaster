@@ -256,8 +256,7 @@ namespace SteamMaster
 
             try
             {
-                Process.Start("SM.Achievements.exe", info.ID.ToString(CultureInfo.InvariantCulture));
-
+                Process.Start("SM.Achievements.exe", $"{info.ID} {info.Name}");
             }
             catch (Win32Exception)
             {

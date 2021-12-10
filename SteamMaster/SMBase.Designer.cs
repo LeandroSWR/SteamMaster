@@ -43,6 +43,7 @@ namespace SteamMaster
             this._NameCurrentTab = new System.Windows.Forms.Label();
             this._IconCurrentTab = new FontAwesome.Sharp.IconPictureBox();
             this._PanelDesktop = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this._PanelSideMenu.SuspendLayout();
             this._PanelLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -54,6 +55,7 @@ namespace SteamMaster
             // 
             this._PanelSideMenu.AutoScroll = true;
             this._PanelSideMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(40)))), ((int)(((byte)(47)))));
+            this._PanelSideMenu.Controls.Add(this.label1);
             this._PanelSideMenu.Controls.Add(this._BttIdle);
             this._PanelSideMenu.Controls.Add(this._BttSelectGame);
             this._PanelSideMenu.Controls.Add(this._BttMain);
@@ -268,6 +270,17 @@ namespace SteamMaster
             this._PanelDesktop.Size = new System.Drawing.Size(1253, 698);
             this._PanelDesktop.TabIndex = 6;
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.DimGray;
+            this.label1.Location = new System.Drawing.Point(12, 726);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(92, 17);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Version 0.1.0";
+            // 
             // SMBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -285,6 +298,7 @@ namespace SteamMaster
             this.Text = "Steam Master";
             this.Resize += new System.EventHandler(this.SMmain_Resize);
             this._PanelSideMenu.ResumeLayout(false);
+            this._PanelSideMenu.PerformLayout();
             this._PanelLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this._PanelTitleBar.ResumeLayout(false);
@@ -308,6 +322,7 @@ namespace SteamMaster
         private FontAwesome.Sharp.IconButton _BttMinimize;
         private FontAwesome.Sharp.IconButton _BttMaximize;
         private FontAwesome.Sharp.IconButton _BttClose;
+        private System.Windows.Forms.Label label1;
     }
 }
 
