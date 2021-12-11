@@ -31,6 +31,7 @@ namespace SteamMaster
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SMBase));
             this._PanelSideMenu = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this._BttIdle = new FontAwesome.Sharp.IconButton();
             this._BttSelectGame = new FontAwesome.Sharp.IconButton();
             this._BttMain = new FontAwesome.Sharp.IconButton();
@@ -43,7 +44,6 @@ namespace SteamMaster
             this._NameCurrentTab = new System.Windows.Forms.Label();
             this._IconCurrentTab = new FontAwesome.Sharp.IconPictureBox();
             this._PanelDesktop = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this._PanelSideMenu.SuspendLayout();
             this._PanelLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -66,6 +66,17 @@ namespace SteamMaster
             this._PanelSideMenu.Name = "_PanelSideMenu";
             this._PanelSideMenu.Size = new System.Drawing.Size(246, 752);
             this._PanelSideMenu.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.DimGray;
+            this.label1.Location = new System.Drawing.Point(12, 726);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(92, 17);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Version 0.1.2";
             // 
             // _BttIdle
             // 
@@ -269,17 +280,6 @@ namespace SteamMaster
             this._PanelDesktop.Name = "_PanelDesktop";
             this._PanelDesktop.Size = new System.Drawing.Size(1253, 698);
             this._PanelDesktop.TabIndex = 6;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.DimGray;
-            this.label1.Location = new System.Drawing.Point(12, 726);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 17);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Version 0.1.0";
             // 
             // SMBase
             // 
