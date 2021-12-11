@@ -14,6 +14,9 @@ namespace SteamMaster
         private Panel _LeftBorderBtn;
         private Form _CurrentChildForm;
 
+        private Form _GameSelector;
+        private Form _Main;
+
         private Size _FormSize;
 
         private int _BorderSize;
@@ -78,7 +81,7 @@ namespace SteamMaster
         {
             if (_CurrentChildForm != null)
             {
-                _CurrentChildForm.Close();
+                _CurrentChildForm.Visible = false;
             }
             _CurrentChildForm = childForm;
             _CurrentChildForm.TopLevel = false;
@@ -93,13 +96,25 @@ namespace SteamMaster
         private void _BttMain_Click(object sender, EventArgs e)
         {
             ActivateButton(sender);
-            OpenChildForm(new SMMain());
+
+            if (_Main == null)
+            {
+                _Main = new SMMain();
+            }
+
+            OpenChildForm(_Main);
         }
 
         private void _BttSelectGame_Click(object sender, EventArgs e)
         {
             ActivateButton(sender);
-            OpenChildForm(new SMGameSelector(_UserID));
+
+            if (_GameSelector == null)
+            {
+                _GameSelector = new SMGameSelector(_UserID);
+            }
+
+            OpenChildForm(_GameSelector);
         }
 
         private void _BttIdle_Click(object sender, EventArgs e)
