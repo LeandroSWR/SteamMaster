@@ -131,45 +131,51 @@ namespace SteamMaster
 
         private void DownloadLogo(object sender, DoWorkEventArgs e)
         {
-            var info = (GameInfo)e.Argument;
-            var logoPath = string.Format(
-                CultureInfo.InvariantCulture,
-                $"https://steamcdn-a.akamaihd.net/steam/apps/{info.ID}/header.jpg");
-            using (var downloader = new WebClient())
+            Task.Factory.StartNew(() =>
             {
-                try
+                GameInfo info = (GameInfo)e.Argument;
+                string logoPath = string.Format(
+                    CultureInfo.InvariantCulture,
+                    $"https://steamcdn-a.akamaihd.net/steam/apps/{info.ID}/header.jpg");
+
+                LogoInfo logoInfo;
+
+                using (var downloader = new WebClient())
                 {
-                    var data = downloader.DownloadData(new Uri(logoPath));
-                    using (var stream = new MemoryStream(data, false))
+                    try
                     {
-                        var bitmap = new Bitmap(stream);
-                        e.Result = new LogoInfo((uint)info.ID, bitmap);
+                        var data = downloader.DownloadData(new Uri(logoPath));
+                        using (var stream = new MemoryStream(data, false))
+                        {
+                            var bitmap = new Bitmap(stream);
+                            logoInfo = new LogoInfo((uint)info.ID, bitmap);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        logoInfo = new LogoInfo((uint)info.ID, null);
                     }
                 }
-                catch (Exception)
+
+                if (logoInfo.Logo != null && this._Games.TryGetValue((int)logoInfo.Id, out var gameInfo))
                 {
-                    e.Result = new LogoInfo((uint)info.ID, null);
+                    if (_GamesListView.InvokeRequired)
+                    {
+                        _GamesListView.Invoke((MethodInvoker)delegate ()
+                        {
+                            this._GamesListView.BeginUpdate();
+                            var imageIndex = this._GameLogoList.Images.Count;
+                            this._GameLogoList.Images.Add(gameInfo.ID.ToString(), logoInfo.Logo);
+                            gameInfo.ImageIndex = imageIndex;
+                            this._GamesListView.EndUpdate();
+                        });
+                    }
                 }
-            }
+            });
         }
 
         private void OnLogoDownloaded(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Error != null || e.Cancelled == true)
-            {
-                return;
-            }
-
-            var logoInfo = (LogoInfo)e.Result;
-            if (logoInfo.Logo != null && this._Games.TryGetValue((int)logoInfo.Id, out var gameInfo))
-            {
-                this._GamesListView.BeginUpdate();
-                var imageIndex = this._GameLogoList.Images.Count;
-                this._GameLogoList.Images.Add(gameInfo.ID.ToString(), logoInfo.Logo);
-                gameInfo.ImageIndex = imageIndex;
-                this._GamesListView.EndUpdate();
-            }
-
             this.DownloadNextLogo();
         }
 
