@@ -77,8 +77,8 @@ namespace SteamMaster
         private void OnGamesDownloadFinished(object sender, RunWorkerCompletedEventArgs e)
         {
             _TotalTime.Text = $"{DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime()} Finished! Total of {_Games.Count} Games";
+            
             RefreshGames();
-            DownloadNextLogo();
         }
 
         private void RefreshGames()
@@ -95,23 +95,12 @@ namespace SteamMaster
                 this._GamesListView.Items[0].Selected = true;
                 this._GamesListView.Select();
             }
+
+            DownloadNextLogo();
         }
 
         private void AddGameToLogoQueue(GameInfo info)
         {
-            // Checks if the current game has a logo
-            using (WebClient client = new WebClient())
-            {
-                try
-                {
-                    var data = client.DownloadData($"https://steamcdn-a.akamaihd.net/steam/apps/{info.ID}/header.jpg");
-                }
-                catch
-                {
-                    return;
-                }
-            }
-
             int imageIndex = _GameLogoList.Images.IndexOfKey(info.ID.ToString());
             if (imageIndex >= 0)
             {
