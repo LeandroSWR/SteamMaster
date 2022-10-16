@@ -1,6 +1,6 @@
 # SteamMaster
 
-This is a work in progress in the end the objective is to have an app that alows you to edit any achievement idle games and some other things.
+This is a work in progress the end objective is to have an app that alows you to edit any achievement idle games and some other things.
 The end product will be open for all without the need to login or do any thing at all! Simple plug and play ;)
 
 ## Porgress
