@@ -7,7 +7,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace SM.Achievements
+namespace SteamMaster.Achievements
 {
     public partial class SMAchievements : Form
     {

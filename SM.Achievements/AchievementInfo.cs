@@ -1,4 +1,4 @@
-﻿namespace SM.Achievements
+﻿namespace SteamMaster.Achievements
 {
     public class AchievementInfo
     {

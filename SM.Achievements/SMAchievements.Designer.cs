@@ -1,5 +1,5 @@
 ﻿
-namespace SM.Achievements
+namespace SteamMaster.Achievements
 {
     partial class SMAchievements
     {

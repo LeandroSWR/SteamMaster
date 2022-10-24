@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using Steamworks;
 
-namespace SM.Achievements
+namespace SteamMaster.Achievements
 {
     static class Program
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace SM.Achievements
+namespace SteamMaster.Achievements
 {
     partial class ListItem
     {
@@ -81,7 +81,7 @@ namespace SM.Achievements
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::SM.Achievements.Properties.Resources.achievement_bg;
+            this.BackgroundImage = global::SteamMaster.Achievements.Properties.Resources.achievement_bg;
             this.Controls.Add(this._AchievementUnlocked);
             this.Controls.Add(this._AchievementDesc);
             this.Controls.Add(this._AchievementName);
