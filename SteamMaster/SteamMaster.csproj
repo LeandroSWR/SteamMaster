@@ -148,10 +148,6 @@
       <Project>{bc1b848c-99af-4d13-a613-cd412637bd8e}</Project>
       <Name>SteamMaster.Achievements</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SteamMaster.Pipes\SteamMaster.Pipes.csproj">
-      <Project>{a5ed7d94-377c-416f-b4ea-774efa2f8003}</Project>
-      <Name>SteamMaster.Pipes</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
