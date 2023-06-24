@@ -65,12 +65,16 @@ namespace SteamMaster
                 // For testing purposes
                 _Games.Add(480, new GameInfo(480, "Spacewar"));
 
-                while (nodes.MoveNext())
+                Parallel.ForEach(nodes.Cast<XPathNavigator>(), (node, state) =>
                 {
-                    int currentID = Convert.ToInt32(nodes.Current.SelectSingleNode("appID").Value);
+                    int currentID = Convert.ToInt32(node.SelectSingleNode("appID").Value);
+                    string currentName = node.SelectSingleNode("name").Value;
 
-                    _Games.Add(currentID, new GameInfo(currentID, nodes.Current.SelectSingleNode("name").Value));
-                }
+                    lock (_Games)
+                    {
+                        _Games.Add(currentID, new GameInfo(currentID, currentName));
+                    }
+                });
             }
         }
 
