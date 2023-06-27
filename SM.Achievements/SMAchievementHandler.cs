@@ -84,10 +84,11 @@ namespace SteamMaster.Achievements
                 // Add it to the dictionary
                 achievements.Add(toSend.Name, toSend);
                 // Send the data
-                SendData(toSend);
+                //SendData(toSend);
             }
 
-            SendData(PipeRequest.AchievementsLoaded);
+            SendData(achievements);
+            //SendData(PipeRequest.AchievementsLoaded);
         }
 
         public Image GetAchievementImage(int aImageIndex)

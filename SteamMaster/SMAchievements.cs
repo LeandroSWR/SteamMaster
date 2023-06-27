@@ -10,16 +10,21 @@ namespace SteamMaster
 {
     using Achievements;
     using Pipes;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows.Documents;
 
     public partial class SMAchievements : Form
     {
         private ServerPipe server;
         private Dictionary<string, AchievementInfo> achievements;
         private GameInfo gameInfo;
+        private List<ListItem> listItemList;
 
         public SMAchievements(GameInfo info)
         {
             achievements = new Dictionary<string, AchievementInfo>();
+            listItemList = new List<ListItem>();
             gameInfo = info;
 
             InitializeComponent();
@@ -44,8 +49,10 @@ namespace SteamMaster
             }
         }
 
-        private void RefreshAchievements()
+        private async void RefreshAchievements()
         {
+            flowLayoutPanel1.Controls.Clear();
+
             ListItem[] listItems = new ListItem[achievements.Count];
 
             flowLayoutPanel1.Controls.Clear();
@@ -60,13 +67,26 @@ namespace SteamMaster
                 listItems[i].BackColor = Color.Black;
 
                 int index = i;
-                listItems[index]._AchievementUnlocked.CheckedChanged += (sender, e) => this.BeginInvoke((Action)(() => 
+                listItems[index]._AchievementUnlocked.CheckedChanged += (sender, e) => this.BeginInvoke((Action)(() =>
                 {
                     achievements.Values.ElementAt(index).UnlockState = listItems[index]._AchievementUnlocked.Checked;
                     SendData(achievements.Values.ElementAt(index));
                 }));
-                
-                flowLayoutPanel1.Controls.Add(listItems[i]);
+
+                await Task.Run(() =>
+                {
+                    if (flowLayoutPanel1.InvokeRequired)
+                    {
+                        flowLayoutPanel1.Invoke((Action)(() =>
+                        {
+                            flowLayoutPanel1.Controls.Add(listItems[index]);
+                        }));
+                    }
+                    else
+                    {
+                        flowLayoutPanel1.Controls.Add(listItems[index]);
+                    }
+                });
             }
         }
 
@@ -109,24 +129,22 @@ namespace SteamMaster
             server = new ServerPipe("SteamMasterSV", p => p.StartByteReaderAsync());
 
             server.DataReceived += (sndr, args) => this.BeginInvoke((Action)(() =>
-                RecieveData(sndr, args)));
+                ReceiveData(sndr, args)));
         }
 
         /// <summary>
         /// We can recieve to types of data AchievementInfo or Image
         /// </summary>
-        private void RecieveData(object sender, PipeEventArgs args)
+        private async void ReceiveData(object sender, PipeEventArgs args)
         {
+
             AchievementInfo aInfo;
             PipeRequest request;
 
-            if (PipeDataHandler.DeserializeFromBytes(args.Data, out aInfo))
+            if (PipeDataHandler.DeserializeFromBytes(args.Data, out achievements))
             {
-                lock (achievements)
-                {
-                    achievements.Add(aInfo.Name, aInfo);
-                }
-                
+                RefreshAchievements();
+                return;
             }
             else if (PipeDataHandler.DeserializeFromBytes(args.Data, out request))
             {

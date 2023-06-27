@@ -16,9 +16,6 @@ namespace SteamMaster.Achievements
             long appID = 0;
             string appName = "";
 
-
-            //appName = "Spacewar";
-            //appID = 480;
             if (args.Length == 0)
             {
                 Process.Start("SteamMaster.exe");
