@@ -67,6 +67,18 @@
     <Compile Include="DoubleBufferedListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ListItem.Designer.cs">
+      <DependentUpon>ListItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SMAchievements.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SMAchievements.Designer.cs">
+      <DependentUpon>SMAchievements.cs</DependentUpon>
+    </Compile>
     <Compile Include="SMMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +101,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ListItem.resx">
+      <DependentUpon>ListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SMAchievements.resx">
+      <DependentUpon>SMAchievements.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SMGameSelector.resx">
       <DependentUpon>SMGameSelector.cs</DependentUpon>
     </EmbeddedResource>
@@ -147,6 +165,10 @@
     <ProjectReference Include="..\SM.Achievements\SteamMaster.Achievements.csproj">
       <Project>{bc1b848c-99af-4d13-a613-cd412637bd8e}</Project>
       <Name>SteamMaster.Achievements</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SteamMaster.Pipes\SteamMaster.Pipes.csproj">
+      <Project>{0d76f368-8057-4d6e-92f4-6b63f925953c}</Project>
+      <Name>SteamMaster.Pipes</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

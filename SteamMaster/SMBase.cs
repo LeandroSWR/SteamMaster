@@ -77,7 +77,7 @@ namespace SteamMaster
             }
         }
 
-        private void OpenChildForm(Form childForm)
+        public void OpenChildForm(Form childForm)
         {
             if (_CurrentChildForm != null)
             {

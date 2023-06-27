@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SteamMaster.Achievements
+namespace SteamMaster
 {
     public partial class ListItem : UserControl
     {
-        public Dictionary<string, AchievementInfo> Achievements { get; set; }
-
         private string achievementName;
         private string achievementDesc;
         private Image achievementImg;
@@ -67,14 +64,6 @@ namespace SteamMaster.Achievements
         public ListItem()
         {
             InitializeComponent();
-        }
-
-        private void OnClick(object sender, System.EventArgs e)
-        {
-            if (Achievements != null)
-            {
-                Achievements[achievementName].UnlockState = _AchievementUnlocked.Checked;
-            }
         }
     }
 }

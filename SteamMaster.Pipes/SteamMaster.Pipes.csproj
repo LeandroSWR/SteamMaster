@@ -42,9 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicPipe.cs" />
+    <Compile Include="PipeRequest.cs" />
     <Compile Include="ClientPipe.cs" />
     <Compile Include="PipeEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PipeDataHandler.cs" />
     <Compile Include="ServerPipe.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

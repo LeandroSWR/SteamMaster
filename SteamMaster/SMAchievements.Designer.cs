@@ -1,5 +1,5 @@
 ﻿
-namespace SteamMaster.Achievements
+namespace SteamMaster
 {
     partial class SMAchievements
     {
@@ -33,6 +33,7 @@ namespace SteamMaster.Achievements
             this._SaveButton = new System.Windows.Forms.Button();
             this._UnlockAll = new System.Windows.Forms.Button();
             this._LockAll = new System.Windows.Forms.Button();
+            this._ServerWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -75,6 +76,10 @@ namespace SteamMaster.Achievements
             this._LockAll.UseVisualStyleBackColor = true;
             this._LockAll.Click += new System.EventHandler(this.LockAll);
             // 
+            // _ServerWorker
+            // 
+            this._ServerWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this._ServerWorker_DoWork);
+            // 
             // SMAchievements
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -99,6 +104,7 @@ namespace SteamMaster.Achievements
         private System.Windows.Forms.Button _SaveButton;
         private System.Windows.Forms.Button _UnlockAll;
         private System.Windows.Forms.Button _LockAll;
+        private System.ComponentModel.BackgroundWorker _ServerWorker;
     }
 }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SteamMaster.Pipes
 {
-    internal class ServerPipe : BasicPipe
+    public class ServerPipe : BasicPipe
     {
         public event EventHandler<EventArgs> Connected;
 

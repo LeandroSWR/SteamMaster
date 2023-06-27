@@ -57,23 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AchievementInfo.cs" />
-    <Compile Include="ListItem.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ListItem.Designer.cs">
-      <DependentUpon>ListItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SMAchievements.cs">
+    <Compile Include="SMAchievementHandler.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SMAchievements.Designer.cs">
-      <DependentUpon>SMAchievements.cs</DependentUpon>
+    <Compile Include="SMAchievementHandler.Designer.cs">
+      <DependentUpon>SMAchievementHandler.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ListItem.resx">
-      <DependentUpon>ListItem.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -84,8 +75,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SMAchievements.resx">
-      <DependentUpon>SMAchievements.cs</DependentUpon>
+    <EmbeddedResource Include="SMAchievementHandler.resx">
+      <DependentUpon>SMAchievementHandler.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -106,6 +97,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\achievement-bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SteamMaster.Pipes\SteamMaster.Pipes.csproj">
+      <Project>{0d76f368-8057-4d6e-92f4-6b63f925953c}</Project>
+      <Name>SteamMaster.Pipes</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -2,7 +2,7 @@
 
 namespace SteamMaster
 {
-    class GameInfo
+    public class GameInfo
     {
         public string Name { get; }
         public int ID { get; }

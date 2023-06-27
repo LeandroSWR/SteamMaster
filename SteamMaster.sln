@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamMaster", "SteamMaster\SteamMaster.csproj", "{85BFF854-4138-4B5F-86FA-D6472A3F52DA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0D76F368-8057-4D6E-92F4-6B63F925953C} = {0D76F368-8057-4D6E-92F4-6B63F925953C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamMaster.Achievements", "SM.Achievements\SteamMaster.Achievements.csproj", "{BC1B848C-99AF-4D13-A613-CD412637BD8E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0D76F368-8057-4D6E-92F4-6B63F925953C} = {0D76F368-8057-4D6E-92F4-6B63F925953C}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamMaster.Pipes", "SteamMaster.Pipes\SteamMaster.Pipes.csproj", "{0D76F368-8057-4D6E-92F4-6B63F925953C}"
 EndProject

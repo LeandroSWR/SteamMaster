@@ -13,9 +13,12 @@ namespace SteamMaster.Achievements
         [STAThread]
         static void Main(string[] args)
         {
-            long appID;
-            string appName;
+            long appID = 0;
+            string appName = "";
 
+
+            //appName = "Spacewar";
+            //appID = 480;
             if (args.Length == 0)
             {
                 Process.Start("SteamMaster.exe");
@@ -41,7 +44,7 @@ namespace SteamMaster.Achievements
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new SMAchievements(appName));
+                Application.Run(new SMAchievementHandler(appName));
             }
             else
             {

@@ -1,160 +1,145 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Steamworks;
 using System.Windows.Forms;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.Threading;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 
-namespace SteamMaster.Achievements
+namespace SteamMaster
 {
+    using Achievements;
+    using Pipes;
+
     public partial class SMAchievements : Form
     {
+        private ServerPipe server;
         private Dictionary<string, AchievementInfo> achievements;
+        private GameInfo gameInfo;
 
-        public SMAchievements(string appName)
+        public SMAchievements(GameInfo info)
         {
             achievements = new Dictionary<string, AchievementInfo>();
+            gameInfo = info;
 
             InitializeComponent();
-            this.Text = appName;
+            this.Text = info.Name;
+            _ServerWorker.RunWorkerAsync();
         }
 
-        private void SMAchievements_Load(object sender, EventArgs e)
+        private void SMAchievements_Load(object sender, EventArgs e) 
         {
-            RequestIconInfo();
-            RefreshAchievements();
-        }
-
-        private void RequestIconInfo()
-        {
-            // Request logo icons (For some reason the Steam API doesn't return the correct id for the icon on the first request)
-            for (int i = 0; i < SteamUserStats.GetNumAchievements(); i++)
+            try
             {
-                // So i do a request but i don't save any info i know wont be correct
-                SteamUserStats.GetAchievementIcon(SteamUserStats.GetAchievementName((uint)i));
+                Process.Start("SteamMaster.Achievements.exe", $"{gameInfo.ID} {gameInfo.Name}");
+            }
+            catch (Win32Exception)
+            {
+                MessageBox.Show(
+                    this,
+                    "Error!",
+                    "Failed to start SteamMaster.Achievements.exe.",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         private void RefreshAchievements()
         {
-            // We can't continue while the user stats are not up to date
-            SteamUserStats.RequestCurrentStats();
-            // Wait's 250ms to make sure we're able to retrieve the stats
-            Thread.Sleep(250);
+            ListItem[] listItems = new ListItem[achievements.Count];
 
-            ListItem[] listItems = new ListItem[SteamUserStats.GetNumAchievements()];
-
-            achievements.Clear();
             flowLayoutPanel1.Controls.Clear();
 
-            string aName;
-            int aImageIndex;
-            bool aUnlocked;
-
-            // Request logo icons (For some reason the Steam API doesn't return the correct id for the icon on the first request)
             for (int i = 0; i < listItems.Length; i++)
             {
-                aName = SteamUserStats.GetAchievementName((uint)i);
-                // So i do a request but i don't save any info i know wont be correct
-                SteamUserStats.GetAchievementIcon(aName);
-            }
-            Thread.Sleep(100);
-
-            for (int i = 0; i < listItems.Length; i++)
-            {
-                aName = SteamUserStats.GetAchievementName((uint)i);
-                SteamUserStats.GetAchievement(aName, out aUnlocked);
-
                 listItems[i] = new ListItem();
-                listItems[i].AchievementUnlocked = aUnlocked;
-                listItems[i].AchievementName = SteamUserStats.GetAchievementDisplayAttribute(aName, "name");
-                listItems[i].AchievementDesc = SteamUserStats.GetAchievementDisplayAttribute(aName, "desc");
-                aImageIndex = SteamUserStats.GetAchievementIcon(aName);
-                listItems[i].AchievementImg = GetAchievementImage(aImageIndex);
+                listItems[i].AchievementUnlocked = achievements.Values.ElementAt(i).UnlockState;
+                listItems[i].AchievementName = achievements.Values.ElementAt(i).Name;
+                listItems[i].AchievementDesc = achievements.Values.ElementAt(i).Description;
+                listItems[i].AchievementImg = achievements.Values.ElementAt(i).Icon;
                 listItems[i].BackColor = Color.Black;
 
-                achievements.Add(listItems[i].AchievementName, new AchievementInfo(aName, aUnlocked));
-
-                listItems[i].Achievements = achievements;
-
+                int index = i;
+                listItems[index]._AchievementUnlocked.CheckedChanged += (sender, e) => this.BeginInvoke((Action)(() => 
+                {
+                    achievements.Values.ElementAt(index).UnlockState = listItems[index]._AchievementUnlocked.Checked;
+                    SendData(achievements.Values.ElementAt(index));
+                }));
+                
                 flowLayoutPanel1.Controls.Add(listItems[i]);
             }
-
-        }
-
-        public Image GetAchievementImage(int aImageIndex)
-        {
-            Image ret = null;
-            uint imageWidth;
-            uint imageHeight;
-
-            if (SteamUtils.GetImageSize(aImageIndex, out imageWidth, out imageHeight))
-            {
-                byte[] iBytes = new byte[imageWidth * imageHeight * 4];
-
-                if (SteamUtils.GetImageRGBA(aImageIndex, iBytes, (int)(imageWidth * imageHeight * 4)))
-                {
-                    using (var bmp = new Bitmap((int)imageWidth, (int)imageHeight, PixelFormat.Format32bppArgb))
-                    {
-                        Rectangle rectData = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                        BitmapData bmpData = bmp.LockBits(rectData, ImageLockMode.WriteOnly, bmp.PixelFormat);
-                        IntPtr pNative = bmpData.Scan0;
-
-                        Marshal.Copy(iBytes, 0, pNative, iBytes.Length);
-
-                        bmp.UnlockBits(bmpData);
-
-                        ret = bmp.Clone(rectData, PixelFormat.Format32bppRgb);
-                    }
-                }
-            }
-
-            return ret;
         }
 
         private void OnSaveValues(object sender, EventArgs e)
         {
-            foreach(AchievementInfo aInfo in achievements.Values)
+            SendData(PipeRequest.SaveAchievements);
+        }
+
+        private void UnlockAll(object sender, EventArgs e)
+        {
+            SendData(PipeRequest.UnlockAll);
+
+            foreach (AchievementInfo aInfo in achievements.Values)
             {
-                if (aInfo.CurrentUnlockState != aInfo.UnlockState)
-                {
-                    if (aInfo.UnlockState)
-                    {
-                        SteamUserStats.SetAchievement(aInfo.ID);
-                    }
-                    else
-                    {
-                        SteamUserStats.ClearAchievement(aInfo.ID);
-                    }
-
-                    SteamUserStats.StoreStats();
-
-                    // Magic number so all achievements pop up on the side with no bugs
-                    Thread.Sleep(250);
-                }
+                aInfo.UnlockState = true;
             }
 
             RefreshAchievements();
         }
 
-        private void UnlockAll(object sender, EventArgs e)
-        {
-            foreach(AchievementInfo aInfo in achievements.Values)
-            {
-                SteamUserStats.SetAchievement(aInfo.ID);
-                SteamUserStats.StoreStats();
-            }
-        }
-
         private void LockAll(object sender, EventArgs e)
         {
+            SendData(PipeRequest.LockAll);
+
             foreach (AchievementInfo aInfo in achievements.Values)
             {
-                SteamUserStats.ClearAchievement(aInfo.ID);
+                aInfo.UnlockState = false;
             }
-            SteamUserStats.StoreStats();
+
+            RefreshAchievements();
+        }
+
+        private void SendData<T>(T data)
+        {
+            server.WriteBytes(PipeDataHandler.SerializeToBytes(data));
+        }
+        
+        private void _ServerWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            server = new ServerPipe("SteamMasterSV", p => p.StartByteReaderAsync());
+
+            server.DataReceived += (sndr, args) => this.BeginInvoke((Action)(() =>
+                RecieveData(sndr, args)));
+        }
+
+        /// <summary>
+        /// We can recieve to types of data AchievementInfo or Image
+        /// </summary>
+        private void RecieveData(object sender, PipeEventArgs args)
+        {
+            AchievementInfo aInfo;
+            PipeRequest request;
+
+            if (PipeDataHandler.DeserializeFromBytes(args.Data, out aInfo))
+            {
+                lock (achievements)
+                {
+                    achievements.Add(aInfo.Name, aInfo);
+                }
+                
+            }
+            else if (PipeDataHandler.DeserializeFromBytes(args.Data, out request))
+            {
+                switch (request)
+                {
+                    case PipeRequest.AchievementsLoaded:
+                        RefreshAchievements();
+                        break;
+                    case PipeRequest.RefreshAchievements:
+                        RefreshAchievements();
+                        break;
+                }
+            }
         }
     }
 }

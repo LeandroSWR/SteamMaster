@@ -240,10 +240,11 @@ namespace SteamMaster
             _SelectedIndex = e.ItemIndex;
         }
 
-        private void OnGameChosen(object sender, EventArgs e)
+        private void OnGameChosen(object sender, EventArgs e)   // NEEDS UPDATING TO MAKE USE OF THE NAMED PIPES SYSTEM!
         {
             if (_SelectedIndex < 0 || _SelectedIndex >= this._FilteredGames.Count)
             {
+
                 return;
             }
 
@@ -253,20 +254,11 @@ namespace SteamMaster
                 return;
             }
 
-            try
-            {
-                Process.Start("SM.Achievements.exe", $"{info.ID} {info.Name}");
-            }
-            catch (Win32Exception)
-            {
-                MessageBox.Show(
-                    this,
-                    "Failed to start SM.Achievements.exe.",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            SMAchievements smAchievements = new SMAchievements(info);
+
+            (ParentForm as SMBase).OpenChildForm(smAchievements);
         }
+
         private void OpenChildForm(Form childForm)
         {
             childForm.TopLevel = false;

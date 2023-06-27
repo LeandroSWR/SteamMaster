@@ -1,5 +1,5 @@
 ﻿
-namespace SteamMaster.Achievements
+namespace SteamMaster
 {
     partial class ListItem
     {
@@ -75,13 +75,12 @@ namespace SteamMaster.Achievements
             this._AchievementUnlocked.Size = new System.Drawing.Size(15, 14);
             this._AchievementUnlocked.TabIndex = 3;
             this._AchievementUnlocked.UseVisualStyleBackColor = true;
-            this._AchievementUnlocked.CheckedChanged += new System.EventHandler(this.OnClick);
             // 
             // ListItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::SteamMaster.Achievements.Properties.Resources.achievement_bg;
+            this.BackgroundImage = global::SteamMaster.Properties.Resources.achievement_bg;
             this.Controls.Add(this._AchievementUnlocked);
             this.Controls.Add(this._AchievementDesc);
             this.Controls.Add(this._AchievementName);
@@ -99,6 +98,6 @@ namespace SteamMaster.Achievements
         private System.Windows.Forms.PictureBox _AchievementImg;
         private System.Windows.Forms.Label _AchievementDesc;
         private System.Windows.Forms.Label _AchievementName;
-        private System.Windows.Forms.CheckBox _AchievementUnlocked;
+        public System.Windows.Forms.CheckBox _AchievementUnlocked;
     }
 }
